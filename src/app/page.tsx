@@ -1,3 +1,4 @@
+import TravelSearchWidget from '@/components/TravelSearchWidget';
 "use client";
 
 import { useState, useEffect } from "react";
@@ -92,7 +93,7 @@ export default function Home() {
     },
     {
       title: "Haramain High-Speed Bullet Train",
-      location: "Makkah ⇄ Madinah Rail Link",
+      location: "Makkah â‡„ Madinah Rail Link",
       image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&auto=format&fit=crop&q=80",
       features: "300 km/h first-class intercity transit between King Abdulaziz Int'l, Makkah, and Madinah terminals.",
       badge: "Express Intercity Logistics"
@@ -108,6 +109,9 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-slate-50 flex flex-col justify-between">
+      <div className='relative z-20 -mt-16 md:-mt-24 mb-12'>
+        <TravelSearchWidget />
+      </div>
       <div>
         <Navbar />
 
@@ -295,7 +299,7 @@ export default function Home() {
                   </p>
                 </div>
                 <span className="text-[10px] font-bold text-blue-700 block pt-2">
-                  Apply for Intake →
+                  Apply for Intake â†’
                 </span>
               </div>
             </Link>
@@ -331,7 +335,7 @@ export default function Home() {
                   </p>
                 </div>
                 <span className="text-[10px] font-bold text-emerald-700 block pt-2">
-                  View Job Openings →
+                  View Job Openings â†’
                 </span>
               </div>
             </Link>
@@ -367,7 +371,7 @@ export default function Home() {
                   </p>
                 </div>
                 <span className="text-[10px] font-bold text-amber-700 block pt-2">
-                  Request Quota →
+                  Request Quota â†’
                 </span>
               </div>
             </Link>
@@ -403,7 +407,7 @@ export default function Home() {
                   </p>
                 </div>
                 <span className="text-[10px] font-bold text-purple-700 block pt-2">
-                  Apply for Grants →
+                  Apply for Grants â†’
                 </span>
               </div>
             </Link>
