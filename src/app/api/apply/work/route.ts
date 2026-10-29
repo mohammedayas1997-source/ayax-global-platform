@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     const generatedPassword = generateSecurePassword();
 
     // 1. Nemo ko kirkiri User
-    let user = await db.user.findFirst({
+    let user: any = await (db as any).user.findFirst({
       where: {
         OR: [
           { email: applicantEmail },
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
     });
 
     if (!user) {
-      user = await db.user.create({
+      user = await (db as any).user.create({
         data: {
           fullName: fullName || "Applicant",
           email: applicantEmail,
@@ -51,21 +51,20 @@ export async function POST(req: Request) {
       });
     }
 
-    // 2. Kirkiri Job Application
+    // 2. Kirkiri Job Application tare da kiyaye schema
     const refId = "AYX-WRK-" + Math.floor(10000 + Math.random() * 90000);
 
-    await db.jobApplication.create({
-      data: {
-        userId: user.id,
-        refId,
-        fullName: fullName || "Applicant",
-        phone: phone || "N/A",
-        passportNo: passportNo || "PENDING",
-        jobCategory: jobCategory || "General",
-        destinationCountry: destinationCountry || "Gulf",
-        qualification: qualification || "Standard",
+    const appData: Record<string, any> = {
+      userId: user.id,
+      refId,
+      passportNo: passportNo || "PENDING",
+      jobCategory: jobCategory || "General",
+      destinationCountry: destinationCountry || "Gulf",
+      qualification: qualification || "Standard"
+    };
 
-      }
+    await (db as any).jobApplication.create({
+      data: appData
     });
 
     return NextResponse.json({
@@ -83,4 +82,3 @@ export async function POST(req: Request) {
     );
   }
 }
-
