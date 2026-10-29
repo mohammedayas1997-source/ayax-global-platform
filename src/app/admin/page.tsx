@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 
 export default function AdminMainPage() {
+  const [activeTab, setActiveTab] = useState<string>('overview');
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRecord, setSelectedRecord] = useState<any | null>(null);
   const [overrideStage, setOverrideStage] = useState("");
@@ -662,3 +663,4 @@ useEffect(() => {
     </div>
   );
 }
+
