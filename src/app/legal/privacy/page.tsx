@@ -115,7 +115,7 @@ export default function PrivacyPage() {
             <div className="p-4 rounded-2xl bg-slate-100 font-mono text-xs space-y-1 text-slate-800">
               <p>Data Privacy Officer | Ayax Global Ventures Ltd</p>
               <p>Email: ayaxglobalv@gmail.com / info@ayaxtravelsandtours.com</p>
-              <p>Desk Lines: +234 816 144 4444 / +234 708 724 4444</p>
+              <p>Desk Lines: +234 704 749 7491</p>
               <p>Office: Suite C13 &amp; C14, Yam Musa Plaza, Kano State, Nigeria</p>
             </div>
           </section>
