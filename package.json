@@ -7,7 +7,6 @@
   "build": "prisma generate && next build",
   "start": "next start",
   "lint": "eslint"
-}
   },
   "dependencies": {
     "@paystack/inline-js": "^2.27.0",
