@@ -1,0 +1,270 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ----------------------------------------------------
+// ENUMS
+// ----------------------------------------------------
+
+enum Role {
+  USER
+  STAFF
+  ADMIN
+}
+
+enum StaffRole {
+  GENERAL_OFFICER
+  SENIOR_VISA_OFFICER
+  MEDICAL_TOURISM_DESK
+  ACADEMIC_COUNSELOR
+  CV_DOCUMENT_SPECIALIST
+}
+
+enum ApplicationStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  DOCUMENT_VERIFIED
+  HOSPITAL_ACCEPTED
+  EMPLOYER_VETTED
+  ADMISSION_OFFERED
+  VISA_PROCESSING
+  APPROVED_READY
+  REJECTED
+  ACTION_REQUIRED
+}
+
+enum PaymentStatus {
+  UNPAID
+  REGISTRATION_PAID    // ₦50,000 Upfront
+  BALANCE_PENDING      // ₦200,000 Success Fee Due
+  FULLY_PAID
+  DIRECT_HOSPITAL_BILL
+}
+
+// ----------------------------------------------------
+// USER & AUTHENTICATION MODEL
+// ----------------------------------------------------
+
+model User {
+  id                      String                  @id @default(cuid())
+  fullName                String
+  email                   String                  @unique
+  phone                   String
+  password                String
+  ninNumber               String?
+  passportNumber          String?
+  role                    Role                    @default(USER)
+  staffRole               StaffRole?
+  isSuspended             Boolean                 @default(false)
+  createdAt               DateTime                @default(now())
+  updatedAt               DateTime                @updatedAt
+
+  // Dangantaka da sauran rukunoni
+  medicalCases            MedicalCase[]
+  jobApplications         JobApplication[]
+  scholarships            ScholarshipApplication[]
+  visaRequests            VisaRequest[]
+  flightBookings          FlightBooking[]
+  uploadedDocuments       Document[]
+  sentMessages            Message[]
+}
+
+// ----------------------------------------------------
+// 1. MEDICAL TOURISM MODEL (Apollo, Fortis, Max, Medipol)
+// ----------------------------------------------------
+
+model MedicalCase {
+  id                      String            @id @default(cuid())
+  refId                   String            @unique // e.g. AYX-MED-84920
+  userId                  String?
+  user                    User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  // Patient Particulars
+  patientName             String
+  age                     Int
+  gender                  String
+  passportNumber          String
+  companionName           String?
+  companionPassport       String?
+
+  // Medical Clinical Details
+  treatmentCategory       String            // Cardiology, Oncology, Transplant, etc.
+  medicalCondition        String
+  hospitalPreference      String?           // Apollo Hospitals, Medipol, etc.
+  countryOfTreatment      String            @default("India")
+  medicalReportsUrl       String            // Scan din PDF/Hoton sakamakon asibiti
+  passportUrl             String?
+
+  // Financials & Processing
+  registrationFee         Float             @default(50000.0)
+  paymentStatus           PaymentStatus     @default(UNPAID)
+  paymentRef              String?           // Paystack Transaction Ref
+  estimatedHospitalCost   String?
+  status                  ApplicationStatus @default(SUBMITTED)
+
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+}
+
+// ----------------------------------------------------
+// 2. WORK ABROAD & JOB APPLICANTS MODEL
+// ----------------------------------------------------
+
+model JobApplication {
+  id                      String            @id @default(cuid())
+  refId                   String            @unique // e.g. AYX-WRK-51209
+  userId                  String?
+  user                    User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  applicantName           String
+  passportNumber          String
+  phone                   String
+  targetCountry           String            // Qatar, UAE, Saudi Arabia, Poland, Lithuania
+  jobCategory             String            // Driver, Logistics, Hospitality, Electrician, etc.
+  yearsExperience         Int               @default(1)
+
+  // CV Files (Asali da wanda Staff ya sake shiryawa)
+  originalCvUrl           String            // CV na asali da mai nema ya tura
+  formattedCvUrl          String?           // Standardized International CV da Staff ya dora
+  tradeCertificateUrl     String?           // Shaidar sana'a ko Diploma
+  passportUrl             String?
+
+  // Financials & Status
+  paymentStatus           PaymentStatus     @default(UNPAID)
+  paymentRef              String?           // Paystack Ref
+  successBalanceAmount    Float             @default(200000.0)
+  status                  ApplicationStatus @default(SUBMITTED)
+
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+}
+
+// ----------------------------------------------------
+// 3. SCHOLARSHIP & STUDY ABROAD MODEL
+// ----------------------------------------------------
+
+model ScholarshipApplication {
+  id                      String            @id @default(cuid())
+  refId                   String            @unique // e.g. AYX-SCH-90214
+  userId                  String?
+  user                    User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  studentName             String
+  passportNumber          String
+  phone                   String
+  targetCountry           String            // Turkey, North Cyprus, Malaysia, Poland
+  targetUniversity        String?           // Near East, Aydin, APU, etc.
+  degreeLevel             String            // BSc, Masters, PhD
+  intendedCourse          String            // Medicine, Cybersecurity, Engineering
+
+  // Academic Credentials
+  waecOrOLevelUrl         String            // O-Level Certificate / Scratch card
+  transcriptUrl           String?           // Degree transcripts for Postgraduate
+  academicCvUrl           String?
+  passportUrl             String?
+
+  // Scholarship Terms
+  tuitionWaiverGranted    String?           // 100%, 75%, 50%
+  paymentStatus           PaymentStatus     @default(UNPAID)
+  paymentRef              String?
+  status                  ApplicationStatus @default(SUBMITTED)
+
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+}
+
+// ----------------------------------------------------
+// 4. VISA REQUESTS & UMRAH MODEL
+// ----------------------------------------------------
+
+model VisaRequest {
+  id                      String            @id @default(cuid())
+  refId                   String            @unique // e.g. AYX-VIS-77291
+  userId                  String?
+  user                    User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  leadApplicantName       String
+  passportNumber          String
+  contactPhone            String
+  visaType                String            // "VIP Umrah Pilgrimage" ko "Tourist Visa"
+  destinationCountry      String            // Saudi Arabia, UAE, Schengen, etc.
+  pilgrimsOrTravelersCount Int              @default(1)
+  travelMonthOrSeason     String?           // Ramadan, Rajab, December
+  hotelPackageChosen      String?           // 5-Star Haram-view, 4-Star
+
+  // Files
+  combinedPassportsUrl    String?
+  invitationOrBrnNumber   String?
+
+  paymentStatus           PaymentStatus     @default(UNPAID)
+  paymentRef              String?
+  status                  ApplicationStatus @default(SUBMITTED)
+
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+}
+
+// ----------------------------------------------------
+// 5. FLIGHT BOOKING & GDS RESERVATIONS MODEL
+// ----------------------------------------------------
+
+model FlightBooking {
+  id                      String            @id @default(cuid())
+  refId                   String            @unique // e.g. AYX-FLT-88201
+  userId                  String?
+  user                    User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  leadPassengerName       String
+  primaryPassportNumber   String
+  tripType                String            // Round Trip, One Way, Multi-City
+  departureAirport        String            // KAN, ABV, LOS
+  arrivalAirport          String            // DXB, JED, DEL, IST
+  departureDate           DateTime
+  returnDate              DateTime?
+  passengersCount         Int               @default(1)
+  cabinClass              String            @default("Economy") // Economy, Business, First
+  preferredAirline        String?
+  gdsPnrCode              String?           // Amadeus/Sabre PNR
+
+  paymentStatus           PaymentStatus     @default(UNPAID)
+  status                  ApplicationStatus @default(SUBMITTED)
+
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+}
+
+// ----------------------------------------------------
+// 6. GENERAL DOCUMENTS VAULT (My Documents)
+// ----------------------------------------------------
+
+model Document {
+  id                      String            @id @default(cuid())
+  userId                  String
+  user                    User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title                   String
+  fileUrl                 String
+  fileSize                String?
+  fileCategory            String            // "official_approval", "uploaded_credential", "receipt"
+  createdAt               DateTime          @default(now())
+}
+
+// ----------------------------------------------------
+// 7. DIRECT MESSAGES & AUDIT NOTIFICATIONS
+// ----------------------------------------------------
+
+model Message {
+  id                      String            @id @default(cuid())
+  userId                  String
+  user                    User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  senderRole              String            // "OFFICER", "SYSTEM", "CANDIDATE"
+  senderName              String
+  subject                 String
+  body                    String
+  isRead                  Boolean           @default(false)
+  createdAt               DateTime          @default(now())
+}
