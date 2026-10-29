@@ -64,7 +64,7 @@ export async function POST(req: Request) {
         jobCategory: jobCategory || "General",
         destinationCountry: destinationCountry || "Gulf",
         qualification: qualification || "Standard",
-        status: "PENDING"
+
       }
     });
 
@@ -83,3 +83,4 @@ export async function POST(req: Request) {
     );
   }
 }
+
