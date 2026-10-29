@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { 
   Users, 
@@ -42,7 +42,7 @@ export default function AdminMainPage() {
       stage: "Approved / Ready",
       registrationFee: 50000,
       balanceFee: 200000,
-      feeStatus: "Paid (₦50,000)"
+      feeStatus: "Paid (â‚¦50,000)"
     },
     {
       id: "app-2",
@@ -55,7 +55,7 @@ export default function AdminMainPage() {
       stage: "Under Assessment",
       registrationFee: 50000,
       balanceFee: 200000,
-      feeStatus: "Paid (₦50,000)"
+      feeStatus: "Paid (â‚¦50,000)"
     },
     {
       id: "app-3",
@@ -68,7 +68,7 @@ export default function AdminMainPage() {
       stage: "Under Assessment",
       registrationFee: 50000,
       balanceFee: 200000,
-      feeStatus: "Paid (₦50,000)"
+      feeStatus: "Paid (â‚¦50,000)"
     },
     {
       id: "app-4",
@@ -81,7 +81,7 @@ export default function AdminMainPage() {
       stage: "Intake Review",
       registrationFee: 50000,
       balanceFee: 350000,
-      feeStatus: "Paid (₦50,000)"
+      feeStatus: "Paid (â‚¦50,000)"
     },
     {
       id: "app-5",
@@ -90,11 +90,11 @@ export default function AdminMainPage() {
       passportNo: "A90182741",
       type: "Flight Booking",
       folderLink: "/admin/flight-bookings",
-      details: "Kano (KAN) → Dubai (DXB) - 4 Pax",
+      details: "Kano (KAN) â†’ Dubai (DXB) - 4 Pax",
       stage: "Ticket Reservation Issued",
       registrationFee: 50000,
       balanceFee: 150000,
-      feeStatus: "Paid (₦50,000)"
+      feeStatus: "Paid (â‚¦50,000)"
     }
   ]);
 
@@ -321,7 +321,7 @@ useEffect(() => {
               </div>
             </div>
             <h2 className="text-3xl font-black text-emerald-700">
-              ₦{totalRegistrationsPaid.toLocaleString()}
+              â‚¦{totalRegistrationsPaid.toLocaleString()}
             </h2>
             <div className="flex items-center gap-1.5 text-xs text-slate-500 pt-1">
               <span className="text-emerald-700 font-bold flex items-center">
@@ -342,7 +342,7 @@ useEffect(() => {
               </div>
             </div>
             <h2 className="text-3xl font-black text-amber-600">
-              ₦{totalPendingBalances.toLocaleString()}
+              â‚¦{totalPendingBalances.toLocaleString()}
             </h2>
             <p className="text-xs text-slate-500 pt-1">
               Payable strictly upon final visa stamps & admission issuances.
@@ -360,7 +360,7 @@ useEffect(() => {
               </div>
             </div>
             <h2 className="text-3xl font-black text-slate-900">
-              ₦{estimatedGrossRevenue.toLocaleString()}
+              â‚¦{estimatedGrossRevenue.toLocaleString()}
             </h2>
             <p className="text-xs text-slate-500 pt-1">
               Combined intake revenue and projected milestone balances.
@@ -489,8 +489,8 @@ useEffect(() => {
                       </Link>
                     </td>
                     <td className="p-4 text-slate-600">{item.details}</td>
-                    <td className="p-4 font-bold text-emerald-700">₦{item.registrationFee.toLocaleString()}</td>
-                    <td className="p-4 font-bold text-slate-700">₦{item.balanceFee.toLocaleString()}</td>
+                    <td className="p-4 font-bold text-emerald-700">â‚¦{item.registrationFee.toLocaleString()}</td>
+                    <td className="p-4 font-bold text-slate-700">â‚¦{item.balanceFee.toLocaleString()}</td>
                     <td className="p-4">
                       <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-800 border border-slate-200">
                         {item.stage}
@@ -598,11 +598,11 @@ useEffect(() => {
             <div className="grid grid-cols-2 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs">
               <div>
                 <span className="text-slate-400 block text-[10px] uppercase font-bold">Registration Paid</span>
-                <span className="font-bold text-emerald-700 text-sm">₦{selectedRecord.registrationFee.toLocaleString()}</span>
+                <span className="font-bold text-emerald-700 text-sm">â‚¦{selectedRecord.registrationFee.toLocaleString()}</span>
               </div>
               <div>
                 <span className="text-slate-400 block text-[10px] uppercase font-bold">Success Balance Due</span>
-                <span className="font-bold text-slate-900 text-sm">₦{selectedRecord.balanceFee.toLocaleString()}</span>
+                <span className="font-bold text-slate-900 text-sm">â‚¦{selectedRecord.balanceFee.toLocaleString()}</span>
               </div>
             </div>
 

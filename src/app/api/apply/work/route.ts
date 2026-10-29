@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
 // Aikin samar da password mai tsaro bazuwar (Random 8-character password)
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { 
       fullName, 
-      email, 
+
       phone, 
       passportNumber, 
       state, 
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
       user = await db.user.create({
         data: {
           fullName,
-          email,
+
           phone,
           password: generatedPassword, // A gaskiya ana amfani da bcrypt wajen boye shi (hash)
           role: "USER",
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
         userId: user.id,
         applicantName: fullName,
         passportNumber,
-        email,
+
         phone,
         state,
         lga,
@@ -73,7 +73,7 @@ export async function POST(req: Request) {
       success: true,
       message: "Application & Account Created Successfully",
       credentials: {
-        email: user.email,
+
         temporaryPassword: generatedPassword,
       },
       applicationId: application.id,
