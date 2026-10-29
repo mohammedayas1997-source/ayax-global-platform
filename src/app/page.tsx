@@ -1,10 +1,10 @@
-import TravelSearchWidget from '@/components/TravelSearchWidget';
 "use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import TravelSearchWidget from "@/components/TravelSearchWidget";
 import { 
   Plane, 
   Stethoscope, 
@@ -93,7 +93,7 @@ export default function Home() {
     },
     {
       title: "Haramain High-Speed Bullet Train",
-      location: "Makkah â‡„ Madinah Rail Link",
+      location: "Makkah ⇄ Madinah Rail Link",
       image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&auto=format&fit=crop&q=80",
       features: "300 km/h first-class intercity transit between King Abdulaziz Int'l, Makkah, and Madinah terminals.",
       badge: "Express Intercity Logistics"
@@ -109,14 +109,11 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-slate-50 flex flex-col justify-between">
-      <div className='relative z-20 -mt-16 md:-mt-24 mb-12'>
-        <TravelSearchWidget />
-      </div>
       <div>
         <Navbar />
 
-        {/* HERO SECTION WITH PERMANENT STANDBY BUTTONS */}
-        <section className="relative text-white min-h-[640px] lg:min-h-[700px] flex items-center overflow-hidden shadow-2xl">
+        {/* HERO SECTION */}
+        <section className="relative text-white min-h-[580px] lg:min-h-[640px] flex items-center overflow-hidden shadow-2xl">
           {heroBackgrounds.map((slide, index) => (
             <div
               key={index}
@@ -138,7 +135,7 @@ export default function Home() {
             </div>
           ))}
 
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-20 w-full">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 relative z-20 w-full">
             <div className="max-w-3xl space-y-6">
               
               <div 
@@ -180,7 +177,6 @@ export default function Home() {
                     <Stethoscope className="w-4 h-4" /> Medical Tourism
                   </Link>
 
-                  {/* MANPOWER HIRE ACTION */}
                   <Link
                     href="/portals/manpower-request"
                     className="font-extrabold px-5 py-3 rounded-xl shadow-lg transition flex items-center gap-2 hover:opacity-95 text-xs sm:text-sm bg-white text-slate-950"
@@ -203,33 +199,6 @@ export default function Home() {
                   >
                     <GraduationCap className="w-4 h-4 text-amber-400" /> Scholarships
                   </Link>
-
-                  <button
-                    type="button"
-                    onClick={() => handleComingSoon("Umrah e-Visa & Package Booking Portal")}
-                    className="border text-slate-200 font-bold px-4 py-3 rounded-xl transition flex items-center gap-1.5 backdrop-blur text-xs cursor-not-allowed opacity-90 hover:bg-white/5"
-                    style={{ borderColor: "rgba(255, 255, 255, 0.25)", backgroundColor: "rgba(255, 255, 255, 0.05)" }}
-                  >
-                    <Moon className="w-3.5 h-3.5 text-amber-400" /> Umrah (Coming Soon)
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleComingSoon("Tourism Visa Application Desk")}
-                    className="border text-slate-200 font-bold px-4 py-3 rounded-xl transition flex items-center gap-1.5 backdrop-blur text-xs cursor-not-allowed opacity-90 hover:bg-white/5"
-                    style={{ borderColor: "rgba(255, 255, 255, 0.25)", backgroundColor: "rgba(255, 255, 255, 0.05)" }}
-                  >
-                    <Compass className="w-3.5 h-3.5 text-amber-400" /> Tourist Visa (Coming Soon)
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleComingSoon("Online Flight Ticket Booking Engine")}
-                    className="border text-slate-200 font-bold px-4 py-3 rounded-xl transition flex items-center gap-1.5 backdrop-blur text-xs cursor-not-allowed opacity-90 hover:bg-white/5"
-                    style={{ borderColor: "rgba(255, 255, 255, 0.25)", backgroundColor: "rgba(255, 255, 255, 0.05)" }}
-                  >
-                    <Plane className="w-3.5 h-3.5 text-amber-400" /> Flights (Coming Soon)
-                  </button>
                 </div>
               </div>
 
@@ -251,7 +220,7 @@ export default function Home() {
             <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2">
+          <div className="absolute bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2">
             {heroBackgrounds.map((_, idx) => (
               <button
                 key={idx}
@@ -264,11 +233,16 @@ export default function Home() {
           </div>
         </section>
 
-       {/* 6 CORE PILLARS SECTION (INCLUDING MANPOWER RECRUITMENT) */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-12 relative z-30">
+        {/* ULTRA-MODERN ALL-IN-ONE TRAVEL SEARCH WIDGET */}
+        <section className="relative z-30 -mt-12 sm:-mt-16 mb-8">
+          <TravelSearchWidget />
+        </section>
+
+        {/* 6 CORE PILLARS SECTION */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-20">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5">
             
-            {/* 1. Medical Tourism - LIVE */}
+            {/* 1. Medical Tourism */}
             <Link 
               href="/portals/medical-tourism/apply" 
               className="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200 hover:border-amber-500 hover:shadow-2xl transition duration-300 group flex flex-col justify-between"
@@ -299,12 +273,12 @@ export default function Home() {
                   </p>
                 </div>
                 <span className="text-[10px] font-bold text-blue-700 block pt-2">
-                  Apply for Intake â†’
+                  Apply for Intake →
                 </span>
               </div>
             </Link>
 
-            {/* 2. Work Abroad - LIVE */}
+            {/* 2. Work Abroad */}
             <Link 
               href="/portals/work-abroad/apply" 
               className="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200 hover:border-amber-500 hover:shadow-2xl transition duration-300 group flex flex-col justify-between"
@@ -335,12 +309,12 @@ export default function Home() {
                   </p>
                 </div>
                 <span className="text-[10px] font-bold text-emerald-700 block pt-2">
-                  View Job Openings â†’
+                  View Job Openings →
                 </span>
               </div>
             </Link>
 
-            {/* 3. Manpower Supply - LIVE (SABO) */}
+            {/* 3. Manpower Supply */}
             <Link 
               href="/portals/manpower-request" 
               className="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200 hover:border-amber-500 hover:shadow-2xl transition duration-300 group flex flex-col justify-between"
@@ -371,12 +345,12 @@ export default function Home() {
                   </p>
                 </div>
                 <span className="text-[10px] font-bold text-amber-700 block pt-2">
-                  Request Quota â†’
+                  Request Quota →
                 </span>
               </div>
             </Link>
 
-            {/* 4. Scholarships - LIVE */}
+            {/* 4. Scholarships */}
             <Link 
               href="/portals/study-abroad/apply" 
               className="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200 hover:border-amber-500 hover:shadow-2xl transition duration-300 group flex flex-col justify-between"
@@ -407,15 +381,15 @@ export default function Home() {
                   </p>
                 </div>
                 <span className="text-[10px] font-bold text-purple-700 block pt-2">
-                  Apply for Grants â†’
+                  Apply for Grants →
                 </span>
               </div>
             </Link>
 
-            {/* 5. Tourism Visas - LOCKED (COMING SOON) */}
+            {/* 5. Tourism Visas */}
             <div 
               onClick={() => handleComingSoon("Tourism Visa Portal")}
-              className="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200 hover:border-amber-400 transition duration-300 group flex flex-col justify-between cursor-not-allowed opacity-95"
+              className="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200 hover:border-amber-400 transition duration-300 group flex flex-col justify-between cursor-pointer"
             >
               <div 
                 className="h-32 w-full relative bg-slate-900 overflow-hidden"
@@ -426,8 +400,8 @@ export default function Home() {
                 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
-                <span className="absolute top-2.5 right-2.5 text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 shadow">
-                  COMING SOON
+                <span className="absolute top-2.5 right-2.5 text-[9px] font-bold px-2 py-0.5 rounded-full bg-blue-600 text-white shadow">
+                  FAST-TRACK
                 </span>
                 <div className="absolute bottom-2.5 left-3">
                   <div className="w-8 h-8 rounded-xl bg-amber-500/90 backdrop-blur text-slate-950 flex items-center justify-center shadow">
@@ -445,16 +419,19 @@ export default function Home() {
                     Embassy appointments, hotel bookings &amp; visa packaging.
                   </p>
                 </div>
-                <span className="text-[10px] font-bold text-slate-400 block pt-2">
-                  Saudi/GDS Setup
+                <span className="text-[10px] font-bold text-amber-600 block pt-2">
+                  Check Eligibility →
                 </span>
               </div>
             </div>
 
-            {/* 6. Flight Bookings - LOCKED (COMING SOON) */}
+            {/* 6. Flight Bookings */}
             <div 
-              onClick={() => handleComingSoon("Flight Booking Engine")}
-              className="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200 hover:border-amber-400 transition duration-300 group flex flex-col justify-between cursor-not-allowed opacity-95"
+              onClick={() => {
+                const el = document.getElementById("tourism-section");
+                el?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200 hover:border-amber-400 transition duration-300 group flex flex-col justify-between cursor-pointer"
             >
               <div 
                 className="h-32 w-full relative bg-slate-900 overflow-hidden"
@@ -465,8 +442,8 @@ export default function Home() {
                 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
-                <span className="absolute top-2.5 right-2.5 text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 shadow">
-                  COMING SOON
+                <span className="absolute top-2.5 right-2.5 text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-500 text-white shadow">
+                  ONLINE ENGINE
                 </span>
                 <div className="absolute bottom-2.5 left-3">
                   <div className="w-8 h-8 rounded-xl bg-sky-600/90 backdrop-blur text-white flex items-center justify-center shadow">
@@ -481,11 +458,11 @@ export default function Home() {
                     Flight Bookings
                   </h3>
                   <p className="text-[11px] text-slate-500 leading-relaxed mt-1">
-                    Direct flight ticketing engine across global airlines.
+                    Direct flight ticketing engine across domestic &amp; global airlines.
                   </p>
                 </div>
-                <span className="text-[10px] font-bold text-slate-400 block pt-2">
-                  GDS Amadeus Sync
+                <span className="text-[10px] font-bold text-sky-700 block pt-2">
+                  Search Flights Now →
                 </span>
               </div>
             </div>
@@ -493,7 +470,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SHASHIN ASALIN GINE-GINEN SAUDIYYA & UMRAH PACKAGES */}
+        {/* SAUDI ARABIA & UMRAH PACKAGES */}
         <section id="tourism-section" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10 gap-4">
             <div>
@@ -511,10 +488,10 @@ export default function Home() {
             <button
               type="button"
               onClick={() => handleComingSoon("Saudi Umrah Package Booking")}
-              className="px-5 py-2.5 rounded-xl font-bold text-xs shadow-md transition flex items-center gap-2 hover:opacity-90 cursor-not-allowed"
+              className="px-5 py-2.5 rounded-xl font-bold text-xs shadow-md transition flex items-center gap-2 hover:opacity-90"
               style={{ backgroundColor: "#031B4E", color: "#F59E0B" }}
             >
-              <Lock className="w-3.5 h-3.5" /> Book Umrah Package (Coming Soon)
+              <Moon className="w-3.5 h-3.5" /> Book Umrah Package
             </button>
           </div>
 
@@ -556,9 +533,9 @@ export default function Home() {
                     <button
                       type="button"
                       onClick={() => handleComingSoon(dest.title)}
-                      className="text-xs font-bold text-amber-600 hover:text-amber-700 flex items-center gap-1 cursor-not-allowed"
+                      className="text-xs font-bold text-amber-600 hover:text-amber-700 flex items-center gap-1"
                     >
-                      <Lock className="w-3 h-3" /> Coming Soon
+                      Inquire Now →
                     </button>
                   </div>
                 </div>
@@ -567,13 +544,13 @@ export default function Home() {
           </div>
         </section>
 
-        {/* TOURISM VISA APPLICATION (LOCKED COMING SOON SECTION) */}
+        {/* TOURISM VISA APPLICATION SECTION */}
         <section id="tourism-visa" className="py-16 bg-white border-y border-slate-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="bg-gradient-to-br from-slate-900 to-blue-950 text-white rounded-3xl p-8 sm:p-14 relative overflow-hidden shadow-2xl border border-slate-800">
               <div className="max-w-3xl space-y-5 relative z-10">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-400 text-slate-950">
-                  <Clock className="w-3.5 h-3.5" /> Coming Soon: Q4 Deployment
+                  <CheckCircle2 className="w-3.5 h-3.5" /> Priority Embassy Assistance
                 </span>
                 
                 <h2 className="text-3xl sm:text-4xl font-black text-white">
@@ -581,7 +558,7 @@ export default function Home() {
                 </h2>
                 
                 <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-                  For tourism visas, foreign embassies require physical biometric appointments and thorough document authentication. Ayax Travels and Tours handles your complete dossier: <strong>verified flight reservations, hotel bookings, official itinerary design, and embassy interview appointment booking</strong> (Schengen, UK, Dubai, Turkey, and USA)[cite: 9, 13].
+                  For tourism visas, foreign embassies require physical biometric appointments and thorough document authentication. Ayax Travels and Tours handles your complete dossier: <strong>verified flight reservations, hotel bookings, official itinerary design, and embassy interview appointment booking</strong> (Schengen, UK, Dubai, Turkey, and USA)[cite: 9].
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs">
@@ -604,9 +581,9 @@ export default function Home() {
 
                 <div className="pt-4 max-w-lg">
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
-                    Join the Priority Tourist Visa Waitlist (Get Notified First)
+                    Request Direct Visa Assistance Desk
                   </label>
-                  <form onSubmit={(e) => { e.preventDefault(); alert("Thank you! You have been added to our VIP Tourist Visa priority list."); }} className="flex flex-col sm:flex-row gap-2">
+                  <form onSubmit={(e) => { e.preventDefault(); alert("Application received! Our visa desk will contact you via WhatsApp/Email shortly."); }} className="flex flex-col sm:flex-row gap-2">
                     <input 
                       type="email" 
                       required
@@ -618,78 +595,11 @@ export default function Home() {
                       className="px-6 py-3 rounded-xl font-bold text-xs shadow-lg transition flex items-center justify-center gap-1.5 hover:opacity-90"
                       style={{ backgroundColor: "#F59E0B", color: "#031B4E" }}
                     >
-                      <Send className="w-3.5 h-3.5" /> Join Waitlist
+                      <Send className="w-3.5 h-3.5" /> Submit Request
                     </button>
                   </form>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* FLIGHT BOOKING ENGINE (LOCKED COMING SOON SECTION) */}
-        <section id="flight-booking" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-3xl border border-slate-200 shadow-xl p-8 sm:p-12 space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-100 pb-5">
-              <div>
-                <span className="text-xs font-bold uppercase tracking-widest text-amber-600 block">
-                  Online Flight Ticket Booking Engine
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">
-                  Book Domestic &amp; International Flights
-                </h3>
-              </div>
-              <span className="px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-amber-500 text-slate-950 shadow-sm flex items-center gap-1.5">
-                <Lock className="w-3.5 h-3.5" /> Coming Soon
-              </span>
-            </div>
-
-            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4 opacity-70 cursor-not-allowed">
-              <div className="flex gap-4 text-xs font-bold text-slate-700">
-                <span className="text-amber-600 border-b-2 border-amber-500 pb-1 cursor-not-allowed">Round Trip</span>
-                <span className="text-slate-400 cursor-not-allowed">One Way</span>
-                <span className="text-slate-400 cursor-not-allowed">Multi-City</span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
-                <div className="bg-white p-3 rounded-xl border border-slate-200">
-                  <span className="text-[10px] font-bold uppercase text-slate-400 block">From</span>
-                  <span className="text-sm font-bold text-slate-800">Mallam Aminu Kano (KAN)</span>
-                </div>
-
-                <div className="bg-white p-3 rounded-xl border border-slate-200">
-                  <span className="text-[10px] font-bold uppercase text-slate-400 block">To</span>
-                  <span className="text-sm font-bold text-slate-800">King Abdulaziz Int&apos;l (JED)</span>
-                </div>
-
-                <div className="bg-white p-3 rounded-xl border border-slate-200">
-                  <span className="text-[10px] font-bold uppercase text-slate-400 block">Departure Date</span>
-                  <span className="text-sm font-bold text-slate-800 flex items-center gap-1.5">
-                    <Calendar className="w-4 h-4 text-amber-500" /> Nov 15, 2026
-                  </span>
-                </div>
-
-                <div className="bg-white p-3 rounded-xl border border-slate-200">
-                  <span className="text-[10px] font-bold uppercase text-slate-400 block">Return Date</span>
-                  <span className="text-sm font-bold text-slate-800 flex items-center gap-1.5">
-                    <Calendar className="w-4 h-4 text-amber-500" /> Nov 30, 2026
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
-              <p className="text-xs text-slate-500">
-                * We are currently finalizing API integrations with Amadeus &amp; Sabre GDS for real-time live ticket issuances. Direct automated bookings will activate upon deployment.
-              </p>
-              <button
-                type="button"
-                onClick={() => handleComingSoon("Flight Ticket Reservation Engine")}
-                className="px-6 py-3 rounded-xl font-bold text-xs shadow transition whitespace-nowrap cursor-not-allowed opacity-90"
-                style={{ backgroundColor: "#031B4E", color: "#F59E0B" }}
-              >
-                Flight Booking (Coming Soon)
-              </button>
             </div>
           </div>
         </section>
