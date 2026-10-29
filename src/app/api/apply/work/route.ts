@@ -1,11 +1,10 @@
 ﻿import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
-// Aikin samar da password mai tsaro bazuwar (Random 8-character password)
 function generateSecurePassword() {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$";
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789@#$";
   let pass = "";
-  for (let i = 0; i < 9; i++) {
+  for (let i = 0; i < 8; i++) {
     pass += chars.charAt(Math.floor(Math.random() * chars.length));
   }
   return pass;
@@ -16,70 +15,71 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { 
       fullName, 
-
       phone, 
-      passportNumber, 
-      state, 
-      lga, 
-      address, 
-      jobTitle, 
-      targetCountry, 
-      sponsorshipPathway, 
-      paystackReference,
-      amountPaid
+      email, 
+      passportNo, 
+      jobCategory, 
+      destinationCountry, 
+      qualification 
     } = body;
 
-    // 1. Duba ko mutumin yana da asusu a baya, idan babu a bude masa sabo
-    let user = await db.user.findUnique({
-      where: { email },
-    });
+    const applicantEmail = email && typeof email === "string" && email.trim() !== "" 
+      ? email.trim() 
+      : `${String(phone || Date.now()).replace(/[^0-9]/g, "")}@applicant.ayaxtravels.com`;
 
     const generatedPassword = generateSecurePassword();
+
+    // 1. Nemo ko kirkiri User
+    let user = await db.user.findFirst({
+      where: {
+        OR: [
+          { email: applicantEmail },
+          { phone: phone }
+        ]
+      }
+    });
 
     if (!user) {
       user = await db.user.create({
         data: {
-          fullName,
-
-          phone,
-          password: generatedPassword, // A gaskiya ana amfani da bcrypt wajen boye shi (hash)
-          role: "USER",
-        },
+          fullName: fullName || "Applicant",
+          email: applicantEmail,
+          phone: phone || "N/A",
+          password: generatedPassword,
+          role: "USER"
+        }
       });
     }
 
-    // 2. Kafa sabon Application a karkashin wannan mutumin
-    const application = await db.jobApplication.create({
+    // 2. Kirkiri Job Application
+    const refId = "AYX-WRK-" + Math.floor(10000 + Math.random() * 90000);
+
+    await db.jobApplication.create({
       data: {
         userId: user.id,
-        applicantName: fullName,
-        passportNumber,
-
-        phone,
-        state,
-        lga,
-        address,
-        jobTitle,
-        targetCountry,
-        sponsorshipPathway,
-        cvUrl: body.cvUrl || "uploaded-cv-link",
-        registrationPaid: true,
-        registrationAmount: amountPaid,
-        status: "SUBMITTED",
-      },
+        refId,
+        fullName: fullName || "Applicant",
+        phone: phone || "N/A",
+        passportNo: passportNo || "PENDING",
+        jobCategory: jobCategory || "General",
+        destinationCountry: destinationCountry || "Gulf",
+        qualification: qualification || "Standard",
+        status: "PENDING"
+      }
     });
 
     return NextResponse.json({
       success: true,
-      message: "Application & Account Created Successfully",
-      credentials: {
-
-        temporaryPassword: generatedPassword,
-      },
-      applicationId: application.id,
+      refId,
+      tempPassword: generatedPassword,
+      message: "Application registered successfully"
     });
+
   } catch (error: any) {
-    console.error("Application error:", error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    console.error("Job Application API Error:", error);
+    return NextResponse.json(
+      { success: false, error: error?.message || "Failed to process application" },
+      { status: 500 }
+    );
   }
 }
