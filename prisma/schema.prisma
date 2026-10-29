@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // ----------------------------------------------------
@@ -40,8 +41,8 @@ enum ApplicationStatus {
 
 enum PaymentStatus {
   UNPAID
-  REGISTRATION_PAID    // ₦50,000 Upfront
-  BALANCE_PENDING      // ₦200,000 Success Fee Due
+  REGISTRATION_PAID
+  BALANCE_PENDING
   FULLY_PAID
   DIRECT_HOSPITAL_BILL
 }
@@ -64,7 +65,6 @@ model User {
   createdAt               DateTime                @default(now())
   updatedAt               DateTime                @updatedAt
 
-  // Dangantaka da sauran rukunoni
   medicalCases            MedicalCase[]
   jobApplications         JobApplication[]
   scholarships            ScholarshipApplication[]
@@ -75,16 +75,15 @@ model User {
 }
 
 // ----------------------------------------------------
-// 1. MEDICAL TOURISM MODEL (Apollo, Fortis, Max, Medipol)
+// 1. MEDICAL TOURISM MODEL
 // ----------------------------------------------------
 
 model MedicalCase {
   id                      String            @id @default(cuid())
-  refId                   String            @unique // e.g. AYX-MED-84920
+  refId                   String            @unique
   userId                  String?
   user                    User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
 
-  // Patient Particulars
   patientName             String
   age                     Int
   gender                  String
@@ -92,18 +91,16 @@ model MedicalCase {
   companionName           String?
   companionPassport       String?
 
-  // Medical Clinical Details
-  treatmentCategory       String            // Cardiology, Oncology, Transplant, etc.
+  treatmentCategory       String
   medicalCondition        String
-  hospitalPreference      String?           // Apollo Hospitals, Medipol, etc.
+  hospitalPreference      String?
   countryOfTreatment      String            @default("India")
-  medicalReportsUrl       String            // Scan din PDF/Hoton sakamakon asibiti
+  medicalReportsUrl       String
   passportUrl             String?
 
-  // Financials & Processing
   registrationFee         Float             @default(50000.0)
   paymentStatus           PaymentStatus     @default(UNPAID)
-  paymentRef              String?           // Paystack Transaction Ref
+  paymentRef              String?
   estimatedHospitalCost   String?
   status                  ApplicationStatus @default(SUBMITTED)
 
@@ -117,26 +114,24 @@ model MedicalCase {
 
 model JobApplication {
   id                      String            @id @default(cuid())
-  refId                   String            @unique // e.g. AYX-WRK-51209
+  refId                   String            @unique
   userId                  String?
   user                    User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   applicantName           String
   passportNumber          String
   phone                   String
-  targetCountry           String            // Qatar, UAE, Saudi Arabia, Poland, Lithuania
-  jobCategory             String            // Driver, Logistics, Hospitality, Electrician, etc.
+  targetCountry           String
+  jobCategory             String
   yearsExperience         Int               @default(1)
 
-  // CV Files (Asali da wanda Staff ya sake shiryawa)
-  originalCvUrl           String            // CV na asali da mai nema ya tura
-  formattedCvUrl          String?           // Standardized International CV da Staff ya dora
-  tradeCertificateUrl     String?           // Shaidar sana'a ko Diploma
+  originalCvUrl           String
+  formattedCvUrl          String?
+  tradeCertificateUrl     String?
   passportUrl             String?
 
-  // Financials & Status
   paymentStatus           PaymentStatus     @default(UNPAID)
-  paymentRef              String?           // Paystack Ref
+  paymentRef              String?
   successBalanceAmount    Float             @default(200000.0)
   status                  ApplicationStatus @default(SUBMITTED)
 
@@ -150,26 +145,24 @@ model JobApplication {
 
 model ScholarshipApplication {
   id                      String            @id @default(cuid())
-  refId                   String            @unique // e.g. AYX-SCH-90214
+  refId                   String            @unique
   userId                  String?
   user                    User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   studentName             String
   passportNumber          String
   phone                   String
-  targetCountry           String            // Turkey, North Cyprus, Malaysia, Poland
-  targetUniversity        String?           // Near East, Aydin, APU, etc.
-  degreeLevel             String            // BSc, Masters, PhD
-  intendedCourse          String            // Medicine, Cybersecurity, Engineering
+  targetCountry           String
+  targetUniversity        String?
+  degreeLevel             String
+  intendedCourse          String
 
-  // Academic Credentials
-  waecOrOLevelUrl         String            // O-Level Certificate / Scratch card
-  transcriptUrl           String?           // Degree transcripts for Postgraduate
+  waecOrOLevelUrl         String
+  transcriptUrl           String?
   academicCvUrl           String?
   passportUrl             String?
 
-  // Scholarship Terms
-  tuitionWaiverGranted    String?           // 100%, 75%, 50%
+  tuitionWaiverGranted    String?
   paymentStatus           PaymentStatus     @default(UNPAID)
   paymentRef              String?
   status                  ApplicationStatus @default(SUBMITTED)
@@ -184,20 +177,19 @@ model ScholarshipApplication {
 
 model VisaRequest {
   id                      String            @id @default(cuid())
-  refId                   String            @unique // e.g. AYX-VIS-77291
+  refId                   String            @unique
   userId                  String?
   user                    User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   leadApplicantName       String
   passportNumber          String
   contactPhone            String
-  visaType                String            // "VIP Umrah Pilgrimage" ko "Tourist Visa"
-  destinationCountry      String            // Saudi Arabia, UAE, Schengen, etc.
+  visaType                String
+  destinationCountry      String
   pilgrimsOrTravelersCount Int              @default(1)
-  travelMonthOrSeason     String?           // Ramadan, Rajab, December
-  hotelPackageChosen      String?           // 5-Star Haram-view, 4-Star
+  travelMonthOrSeason     String?
+  hotelPackageChosen      String?
 
-  // Files
   combinedPassportsUrl    String?
   invitationOrBrnNumber   String?
 
@@ -215,21 +207,21 @@ model VisaRequest {
 
 model FlightBooking {
   id                      String            @id @default(cuid())
-  refId                   String            @unique // e.g. AYX-FLT-88201
+  refId                   String            @unique
   userId                  String?
   user                    User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   leadPassengerName       String
   primaryPassportNumber   String
-  tripType                String            // Round Trip, One Way, Multi-City
-  departureAirport        String            // KAN, ABV, LOS
-  arrivalAirport          String            // DXB, JED, DEL, IST
+  tripType                String
+  departureAirport        String
+  arrivalAirport          String
   departureDate           DateTime
   returnDate              DateTime?
   passengersCount         Int               @default(1)
-  cabinClass              String            @default("Economy") // Economy, Business, First
+  cabinClass              String            @default("Economy")
   preferredAirline        String?
-  gdsPnrCode              String?           // Amadeus/Sabre PNR
+  gdsPnrCode              String?
 
   paymentStatus           PaymentStatus     @default(UNPAID)
   status                  ApplicationStatus @default(SUBMITTED)
@@ -239,7 +231,7 @@ model FlightBooking {
 }
 
 // ----------------------------------------------------
-// 6. GENERAL DOCUMENTS VAULT (My Documents)
+// 6. GENERAL DOCUMENTS VAULT
 // ----------------------------------------------------
 
 model Document {
@@ -249,7 +241,7 @@ model Document {
   title                   String
   fileUrl                 String
   fileSize                String?
-  fileCategory            String            // "official_approval", "uploaded_credential", "receipt"
+  fileCategory            String
   createdAt               DateTime          @default(now())
 }
 
@@ -261,7 +253,7 @@ model Message {
   id                      String            @id @default(cuid())
   userId                  String
   user                    User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  senderRole              String            // "OFFICER", "SYSTEM", "CANDIDATE"
+  senderRole              String
   senderName              String
   subject                 String
   body                    String
